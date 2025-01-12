@@ -1,0 +1,57 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: backend
+    ports:
+      - 8000:8000
+    volumes:
+      - ./backend:/app/backend
+    env_file:
+        - ./backend/.env
+    command: uvicorn backend.main:app --host 0.0.0.0 --port 8000 --reload
+    depends_on:
+      - db
+      - redis
+
+  db:
+    image: postgres:15.10
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: 1421
+      POSTGRES_DB: user_db
+    volumes:
+      - postgres-db:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  db-test:
+    image: postgres:15.10
+    container_name: postgres_test
+    environment:
+      - POSTGRES_PASSWORD=password123
+      - POSTGRES_DB=user_test
+    ports:
+      - "5433:5432"
+
+  adminer:
+    image: adminer
+    container_name: adminer
+    ports:
+      - "9090:8080"
+
+  redis:
+    image: redis:7.4.2
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+
+volumes:
+  postgres-db:
+    driver: local
+  redis-data:
+    driver: local
