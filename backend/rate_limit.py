@@ -7,7 +7,7 @@ import os
 
 
 async def service_name_identifier(request: Request):
-    service = request.headers.get("Service-Name")
+    service = request.headers.get("Weather-App")
     return service
 
 

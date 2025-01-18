@@ -1,11 +1,12 @@
 import jwt
 from jwt.exceptions import InvalidTokenError
 import datetime
-from backend import schemas, models, database
+from backend import schemas
 from fastapi import Depends, status, HTTPException
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
 from backend.config import settings
+from backend.database import database, models
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl='login')
 

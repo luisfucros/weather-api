@@ -8,7 +8,7 @@ import json
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 redis_client = redis.Redis.from_url(url=settings.redis_url, decode_responses=True)
-CACHE_TTL = timedelta(minutes=10)
+CACHE_TTL = timedelta(minutes=60)
 
 
 def get_cached_data(key: str) -> dict[str, any]:
