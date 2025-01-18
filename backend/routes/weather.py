@@ -1,4 +1,4 @@
-from fastapi import Depends, APIRouter
+from fastapi import Depends, APIRouter, HTTPException, status
 from backend import schemas
 from backend.utils import oauth2
 from backend.weather_client import WeatherClient
@@ -23,7 +23,11 @@ def get_weather(
     
     weather_data = weather_client.get_weather(city)
 
-    if weather_data.get('cod') == 200:
+    if weather_data.get('cod') == "404":
+         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"{weather_data.get('message')}")
+    
+    if weather_data.get('cod') == "200":
         insert_data(city, weather_data)
     
     return weather_data

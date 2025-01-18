@@ -28,7 +28,7 @@ class WeatherClient:
         if response.status_code != 200:
             error_message = weather_data.get("message", "Unknown error")
             logging.error(f"Error from API: {error_message}")
-            return {"error": error_message}
+            return {"cod": str(response.status_code), "message": error_message}
 
         logging.info(f"Weather data retrieved successfully for {city}.")
         return weather_data
