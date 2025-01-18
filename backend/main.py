@@ -6,22 +6,11 @@ from backend.database.database import engine
 from backend.rate_limit import lifespan
 from fastapi_limiter.depends import RateLimiter
 from backend.routes import auth, weather
-import os
 
 
 models.Base.metadata.create_all(bind=engine)
 
-env = os.getenv("ENVIRONMENT", "test")
-dependencies = []
-
-if env != "test":
-    dependencies.append(
-        Depends(
-            RateLimiter(times=5, seconds=10)
-        )
-    )
-
-app = FastAPI(lifespan=lifespan, dependencies=dependencies)
+app = FastAPI(lifespan=lifespan, dependencies=[Depends(RateLimiter(times=5, seconds=10))])
 
 origins = ["*"]
 
